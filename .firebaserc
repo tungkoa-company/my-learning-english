@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "my-learning-english-id": {
+      "hosting": {
+        "app": [
+          "my-learning-english-id"
+        ]
+      }
+    }
+  }
+}

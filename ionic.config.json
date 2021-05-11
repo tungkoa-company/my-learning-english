@@ -1,0 +1,7 @@
+{
+  "name": "my-learning-english",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
