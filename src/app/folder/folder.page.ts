@@ -9,7 +9,8 @@ import { AngularFireDatabase } from '@angular/fire/database';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
-  public folder: string;
+  folder: string;
+  data: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -28,6 +29,20 @@ export class FolderPage implements OnInit {
     this.db
       .list('/words')
       .valueChanges()
-      .subscribe((res) => console.log(res));
+      .subscribe((res) => {
+        this.data = res;
+        console.log(res);
+      });
+  }
+
+  updateData() {
+    this.data.push({ id: 1234 });
+    console.log(this.data);
+    // this.db
+    //   .list('/words')
+    //   .set('words', 12)
+    //   .then((res) => {
+    //     console.log(res);
+    //   });
   }
 }
