@@ -1,22 +1,84 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{ folder }}</ion-title>
-  </ion-toolbar>
-</ion-header>
+<nz-layout>
+  <nz-table #basicTable [nzData]="wordsList">
+    <thead>
+      <tr>
+        <th>English Word</th>
+        <th>Meaning</th>
+        <th>Related Word</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of wordsList">
+        <td>{{ data.englishWord }}</td>
+        <td>{{ data.meaning }}</td>
+        <td><a>{{ data.relatedWords }}</a></td>
+        <td>
+          <a>{{ data.desc }}</a>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{ folder }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
-</ion-content>
+  <nz-table #editRowTable nzBordered [nzData]="wordsList" nzTableLayout="fixed">
+    <thead>
+      <tr>
+        <th>English Word</th>
+        <th>Meaning</th>
+        <th>Related Word</th>
+        <th>Description</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of editRowTable.data">
+        <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
+          <td>{{ data.englishWord }}</td>
+          <td>{{ data.meaning }}</td>
+          <td><a>{{ data.relatedWords }}</a></td>
+          <td><a>{{ data.desc }}</a></td>
+          <td><a (click)="startEdit(data.id)">Edit</a></td>
+        </ng-container>
+        <ng-template #editTemplate>
+          <td>
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="editCache[data.id].data.englishWord"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="editCache[data.id].data.meaning"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="editCache[data.id].data.relatedWords"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="editCache[data.id].data.desc"
+            />
+          </td>
+          <td>
+            <a (click)="saveEdit(data.id)" class="save">Save</a>
+            <a
+              nz-popconfirm
+              nzPopconfirmTitle="Sure to cancel?"
+              (nzOnConfirm)="cancelEdit(data.id)"
+              >Cancel</a
+            >
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-layout>
