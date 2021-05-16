@@ -12,6 +12,9 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 @NgModule({
   imports: [
@@ -24,6 +27,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzLayoutModule,
     NzPopconfirmModule,
     NzInputModule,
+    NzButtonModule,
+    NzGridModule,
+    NzCheckboxModule,
   ],
   declarations: [FolderPage],
 })

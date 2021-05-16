@@ -5,12 +5,16 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { randomId, testFunction } from '../../common/helper';
 
 interface Words {
-  id;
+  _id?: string;
   englishWord: string;
-  meaning: string;
-  desc: string;
-  relatedWords: string;
+  meaning?: string;
+  desc?: string;
+  relatedWords?: string;
+  examples?: string;
+  remembered: boolean;
+  editFlg?: boolean;
 }
+
 @Component({
   selector: 'app-folder',
   templateUrl: './folder.page.html',
@@ -19,7 +23,17 @@ interface Words {
 export class FolderPage implements OnInit {
   folder: string;
   wordsList: Words[];
-  editCache: { [key: string]: { edit: boolean; data: Words } } = {};
+  // words list when edit flag
+  private demoWord: Words = {
+    _id: '',
+    englishWord: 'english word',
+    meaning: '',
+    desc: '',
+    relatedWords: '',
+    examples: '',
+    remembered: false,
+    editFlg: true,
+  };
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: AngularFirestore,
@@ -27,65 +41,48 @@ export class FolderPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(randomId());
-    testFunction('updateData', this);
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    this.store
-      .collection('words')
-      .valueChanges()
-      .subscribe((res) => {
-        console.log(res);
-      });
+
+    // subscription
     this.db
       .list('/words')
       .valueChanges()
       .subscribe((res: Words[]) => {
         this.wordsList = res;
-        console.log(res);
-        this.updateEditCache();
+        this.setIdForWords();
       });
   }
 
-  updateData() {
-    // this.wordsList.push({ id: 1234 });
-    console.log();
+  private setIdForWords() {
     this.wordsList.forEach((item) => {
-      item.id = randomId();
+      if (!item._id) {
+        item._id = randomId();
+      }
     });
+  }
+
+  updateWordsToFirebase() {
+    this.wordsList.forEach((word) => {
+      word.editFlg = false;
+    });
+    this.db
+      .list('/')
+      .set('words', this.wordsList)
+      .then((res) => {
+        console.log(res);
+      });
+  }
+
+  addWord() {
+    this.wordsList.push(this.demoWord);
+    this.wordsList = Object.assign([], this.wordsList);
     console.log(this.wordsList);
-    this.updateEditCache();
-    // this.db
-    //   .list('/words')
-    //   .set('words', 12)
-    //   .then((res) => {
-    //     console.log(res);
-    //   });
+    this.setIdForWords();
   }
 
-  startEdit(id: string): void {
-    this.editCache[id].edit = true;
-  }
-
-  cancelEdit(id: string): void {
-    const index = this.wordsList.findIndex((item) => item.id === id);
-    this.editCache[id] = {
-      data: { ...this.wordsList[index] },
-      edit: false,
-    };
-  }
-
-  saveEdit(id: string): void {
-    const index = this.wordsList.findIndex((item) => item.id === id);
-    Object.assign(this.wordsList[index], this.editCache[id].data);
-    this.editCache[id].edit = false;
-  }
-
-  updateEditCache(): void {
-    this.wordsList.forEach((item) => {
-      this.editCache[item.id] = {
-        edit: false,
-        data: { ...item },
-      };
+  modifyWordsList() {
+    this.wordsList.forEach((word) => {
+      word.editFlg = true;
     });
   }
 }
