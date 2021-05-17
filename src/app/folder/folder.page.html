@@ -1,77 +1,67 @@
 <div class="button-area">
-  <button class="button-add" nz-button nzSize="large" (click)="addWord()" nzType="primary">Add word</button>
-  <button class="button-add" nz-button nzSize="large" (click)="modifyWordsList()" nzType="primary">Modify</button>
-  <button class="button-add" nz-button nzSize="large" (click)="updateWordsToFirebase()" nzType="primary">Update</button>
+  <button
+    class="button-add"
+    nz-button
+    nzSize="large"
+    (click)="addWord()"
+    nzType="primary"
+  >
+    Add word
+  </button>
+  <button
+    class="button-add"
+    nz-button
+    nzSize="large"
+    (click)="modifyWordsList()"
+    nzType="primary"
+  >
+    Modify
+  </button>
+  <button
+    class="button-add"
+    nz-button
+    nzSize="large"
+    (click)="updateWordsToFirebase()"
+    nzType="primary"
+  >
+    Update
+  </button>
 </div>
-<br/>
-<br/>
+<br />
+<br />
 <nz-layout>
-
-  <!--  <nz-table #editRowTable nzBordered [nzData]="wordsList" nzTableLayout="fixed">-->
-  <!--    <thead>-->
-  <!--      <tr>-->
-  <!--        <th>English Word</th>-->
-  <!--        <th>Examples</th>-->
-  <!--        <th nzRight>Action</th>-->
-  <!--      </tr>-->
-  <!--    </thead>-->
-  <!--    <tbody>-->
-  <!--      <tr *ngFor="let data of editRowTable.data">-->
-  <!--        <ng-container *ngIf="!editCache[data._id].edit; else editTemplate">-->
-  <!--          <td><a [href]="'https://dictionary.cambridge.org/dictionary/english/' + data.englishWord" target="_blank">{{ data.englishWord }}</a></td>-->
-  <!--&lt;!&ndash;          <td>{{ data.meaning }}</td>&ndash;&gt;-->
-  <!--&lt;!&ndash;          <td><a>{{ data.relatedWords }}</a></td>&ndash;&gt;-->
-  <!--          <td><a>{{ data.examples }}</a></td>-->
-  <!--          <td><a (click)="startEdit(data._id)">Edit</a></td>-->
-  <!--        </ng-container>-->
-  <!--        <ng-template #editTemplate>-->
-  <!--          <td>-->
-  <!--            <input-->
-  <!--              type="text"-->
-  <!--              nz-input-->
-  <!--              [(ngModel)]="editCache[data._id].data.englishWord"-->
-  <!--            />-->
-  <!--          </td>-->
-  <!--&lt;!&ndash;          <td>&ndash;&gt;-->
-  <!--&lt;!&ndash;            <input&ndash;&gt;-->
-  <!--&lt;!&ndash;              type="text"&ndash;&gt;-->
-  <!--&lt;!&ndash;              nz-input&ndash;&gt;-->
-  <!--&lt;!&ndash;              [(ngModel)]="editCache[data._id].data.meaning"&ndash;&gt;-->
-  <!--&lt;!&ndash;            />&ndash;&gt;-->
-  <!--&lt;!&ndash;          </td>&ndash;&gt;-->
-  <!--&lt;!&ndash;          <td>&ndash;&gt;-->
-  <!--&lt;!&ndash;            <input&ndash;&gt;-->
-  <!--&lt;!&ndash;              type="text"&ndash;&gt;-->
-  <!--&lt;!&ndash;              nz-input&ndash;&gt;-->
-  <!--&lt;!&ndash;              [(ngModel)]="editCache[data._id].data.relatedWords"&ndash;&gt;-->
-  <!--&lt;!&ndash;            />&ndash;&gt;-->
-  <!--&lt;!&ndash;          </td>&ndash;&gt;-->
-  <!--          <td>-->
-  <!--            <input-->
-  <!--              type="text"-->
-  <!--              nz-input-->
-  <!--              [(ngModel)]="editCache[data._id].data.examples"-->
-  <!--            />-->
-  <!--          </td>-->
-  <!--          <td>-->
-  <!--            <a (click)="saveEdit(data._id)" class="save">Save</a>-->
-  <!--          </td>-->
-  <!--        </ng-template>-->
-  <!--      </tr>-->
-  <!--    </tbody>-->
-  <!--  </nz-table>-->
-
   <div class="gutter">
     <div nz-row [nzGutter]="[10, 10]">
-      <div nz-col class="gutter-row" [nzSpan]="6" *ngFor="let word of wordsList">
+      <div
+        nz-col
+        class="gutter-row"
+        [nzSpan]="6"
+        *ngFor="let word of wordsList"
+      >
         <label nz-checkbox [(ngModel)]="word.remembered"></label>
-        <a a [href]="'https://dictionary.cambridge.org/dictionary/english/' + word.englishWord" target="_blank" *ngIf="!word.editFlg">{{word.englishWord}}</a>
+        <a
+          [href]="'https://dictionary.cambridge.org/dictionary/english/' + word.englishWord"
+          target="_blank"
+          *ngIf="!word.editFlg"
+          >{{word.englishWord}}</a
+        >
         <input
+          class="edit-input"
           *ngIf="word.editFlg"
           type="text"
           nz-input
           [(ngModel)]="word.englishWord"
         />
+
+        <a class="edit" nz-dropdown [nzDropdownMenu]="menu">
+          <i nz-icon nzType="more" nzTheme="outline"></i>
+        </a>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item (click)="startEdit(word._id)">Edit</li>
+            <li nz-menu-item nzDanger (click)="deleteWord(word._id)">Delete</li>
+          </ul>
+        </nz-dropdown-menu>
       </div>
     </div>
   </div>

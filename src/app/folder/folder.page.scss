@@ -14,9 +14,22 @@
     display: flex;
     background: aliceblue;
     align-items: center;
-    max-width: calc(25% - 5px);
+    max-width: none;
+    min-width: 150px;
+    position: relative;
+    flex: none;
 
-  label {
+    .edit {
+      position: absolute;
+      right: 5px;
+    }
+
+    .edit-input {
+      height: 25px;
+      margin-right: 15px;
+    }
+
+    label {
       margin-right: 5px;
       margin-bottom: 5px;
     }

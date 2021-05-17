@@ -34,6 +34,7 @@ export class FolderPage implements OnInit {
     remembered: false,
     editFlg: true,
   };
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: AngularFirestore,
@@ -51,14 +52,6 @@ export class FolderPage implements OnInit {
         this.wordsList = res;
         this.setIdForWords();
       });
-  }
-
-  private setIdForWords() {
-    this.wordsList.forEach((item) => {
-      if (!item._id) {
-        item._id = randomId();
-      }
-    });
   }
 
   updateWordsToFirebase() {
@@ -83,6 +76,24 @@ export class FolderPage implements OnInit {
   modifyWordsList() {
     this.wordsList.forEach((word) => {
       word.editFlg = true;
+    });
+  }
+
+  startEdit(id: string) {
+    const index = this.wordsList.findIndex((item) => item._id === id);
+    this.wordsList[index].editFlg = true;
+  }
+
+  deleteWord(id: string) {
+    const index = this.wordsList.findIndex((item) => item._id === id);
+    this.wordsList.splice(index, 1);
+  }
+
+  private setIdForWords() {
+    this.wordsList.forEach((item) => {
+      if (!item._id) {
+        item._id = randomId();
+      }
     });
   }
 }

@@ -15,6 +15,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @NgModule({
   imports: [
@@ -30,6 +32,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
     NzButtonModule,
     NzGridModule,
     NzCheckboxModule,
+    NzDropDownModule,
+    NzIconModule,
   ],
   declarations: [FolderPage],
 })
