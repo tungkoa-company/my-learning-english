@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { randomId, testFunction } from '../../common/helper';
+import {
+  randomChangePlacesItemInArray,
+  randomId,
+  testFunction,
+} from '../../common/helper';
 
 interface Words {
   _id?: string;
@@ -49,6 +53,7 @@ export class FolderPage implements OnInit {
       .list('/words')
       .valueChanges()
       .subscribe((res: Words[]) => {
+        res = randomChangePlacesItemInArray(res);
         this.wordsList = res;
         this.setIdForWords();
       });
@@ -67,7 +72,8 @@ export class FolderPage implements OnInit {
   }
 
   addWord() {
-    this.wordsList.push(this.demoWord);
+    const demoWord = Object.assign({}, this.demoWord);
+    this.wordsList.push(demoWord);
     this.wordsList = Object.assign([], this.wordsList);
     console.log(this.wordsList);
     this.setIdForWords();
